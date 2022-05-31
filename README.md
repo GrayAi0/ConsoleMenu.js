@@ -2,8 +2,8 @@
 # ConsoleMenu.js Beta
 
 
-
-![Light mode by default](https://github.com/GrayAi0/ConsoleMenu/blob/main/review/Menu-light-mode.png?raw=true)
+Privew for the menu (This is the example menu) 
+![Menu Privew](https://github.com/GrayAi0/ConsoleMenu.js/blob/master/preview/console-menu-privew.js.png?raw=true)
 
 
 
