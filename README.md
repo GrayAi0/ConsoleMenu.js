@@ -2,7 +2,7 @@
 # ConsoleMenu.js Beta
 
 
-Privew for the menu (This is the example menu) 
+### Privew for the menu (This is the example menu)<br>
 ![Menu Privew](https://github.com/GrayAi0/ConsoleMenu.js/blob/master/preview/console-menu-privew.js.png?raw=true)
 
 
@@ -10,7 +10,7 @@ Privew for the menu (This is the example menu)
 
 
 
-## Example
+## Example Menu
 
 ```ts
 try {
