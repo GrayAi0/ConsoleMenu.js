@@ -6,7 +6,6 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var ffi = require('ffi-napi');
 var readline = require('readline');
-var fs = require('fs');
 var wrap = _interopDefault(require('word-wrap'));
 
 function _defineProperties(target, props) {
@@ -89,6 +88,24 @@ function _createForOfIteratorHelperLoose(o, allowArrayLike) {
   throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
+/**
+ * GetConsoleScreenBufferInfo
+ *
+ * dwSize x: offest 0 size 2
+ * dwSize y: offest 2 size 2
+ * dwCursorPosition x: offest 4 size 2
+ * dwCursorPosition y: offest 6 size 2
+ * wAttributes: offest 8 size 2
+ * srWindowLeft: offest 10 size 2
+ * srWindowTop: offest 12 size 2
+ * srWindowRight: offest 14 size 2
+ * srWindowBottom: offest 16 size 2
+ * dwMaximumWindowSize x: offest 18 size 2
+ * dwMaximumWindowSize y: offest 20 size 2
+ *
+ *
+ */
+
 var kernal = /*#__PURE__*/ffi.Library('kernel32', {
   'GetStdHandle': ['int', ['int']],
   'SetConsoleTextAttribute': ['int', ['int', 'int']],
@@ -101,12 +118,10 @@ var Color;
   Color[Color["FOREGROUND_GREEN"] = 2] = "FOREGROUND_GREEN";
   Color[Color["FOREGROUND_RED"] = 4] = "FOREGROUND_RED";
   Color[Color["FOREGROUND_INTENSITY"] = 8] = "FOREGROUND_INTENSITY";
-  Color[Color["FOREGROUND_RESET"] = 15] = "FOREGROUND_RESET";
   Color[Color["BACKGROUND_BLUE"] = 16] = "BACKGROUND_BLUE";
   Color[Color["BACKGROUND_GREEN"] = 32] = "BACKGROUND_GREEN";
   Color[Color["BACKGROUND_RED"] = 64] = "BACKGROUND_RED";
   Color[Color["BACKGROUND_INTENSITY"] = 128] = "BACKGROUND_INTENSITY";
-  Color[Color["BACKGROUND_RESET"] = 256] = "BACKGROUND_RESET";
   Color[Color["COMMON_LVB_LEADING_BYTE"] = 256] = "COMMON_LVB_LEADING_BYTE";
   Color[Color["COMMON_LVB_TRAILING_BYTE"] = 512] = "COMMON_LVB_TRAILING_BYTE";
   Color[Color["COMMON_LVB_GRID_HORIZONTAL"] = 1024] = "COMMON_LVB_GRID_HORIZONTAL";
@@ -136,8 +151,8 @@ var RenderColor = /*#__PURE__*/function () {
     var handle = kernal.GetStdHandle(
     /** Default Console Handle */
     -11);
-    var buff = Buffer.alloc(16
-    /** sizeof(CONSOLE_SCREEN_BUFFER_INFO) == 16 */
+    var buff = Buffer.alloc(22
+    /** sizeof(CONSOLE_SCREEN_BUFFER_INFO) == 22 */
     );
     /** @ts-ignore */
 
@@ -151,8 +166,8 @@ var RenderColor = /*#__PURE__*/function () {
     var handle = kernal.GetStdHandle(
     /** Default Console Handle */
     -11);
-    var buff = Buffer.alloc(16
-    /** sizeof(CONSOLE_SCREEN_BUFFER_INFO) == 16 */
+    var buff = Buffer.alloc(22
+    /** sizeof(CONSOLE_SCREEN_BUFFER_INFO) == 22 */
     );
     /** @ts-ignore */
 
@@ -354,6 +369,29 @@ var CheckButton = /*#__PURE__*/function (_MenuItem) {
   return CheckButton;
 }(MenuItem);
 
+function setCursorPosition(x, y) {
+  process.stdout.cursorTo(x, y);
+}
+function getCursorPosition() {
+  var handle = kernal.GetStdHandle(
+  /** Default Console Handle */
+  -11);
+  var buff = Buffer.alloc(22
+  /** sizeof(CONSOLE_SCREEN_BUFFER_INFO) == 22 */
+  );
+  /** @ts-ignore */
+
+  kernal.GetConsoleScreenBufferInfo(handle, buff);
+  return {
+    x: buff.readInt16LE(4
+    /** offest in memory */
+    ),
+    y: buff.readInt16LE(6
+    /** offest in memory */
+    )
+  };
+}
+
 // format("${name} ${age}", {name: "John", age: 34}) // "John 34"
 function format(data, obj) {
   return data.replace(/\{([^\}]*)\}/g, function (match, key) {
@@ -436,7 +474,10 @@ var MenuCore = /*#__PURE__*/function () {
         index: this._selected_item_idx
       }));else this.render();
     } else if (key.name === 'left') {
-      this.current_selected_item.onClicked();
+      if (this.current_selected_item) {
+        this.current_selected_item.onClicked();
+      }
+
       this.render();
     }
   }
@@ -512,6 +553,8 @@ var MenuCore = /*#__PURE__*/function () {
   };
 
   _proto.moveSelection = function moveSelection(up) {
+    var _this$current_selecte;
+
     this._selected_item_idx += up ? -1 : 1;
 
     if (this._selected_item_idx < 0) {
@@ -520,7 +563,7 @@ var MenuCore = /*#__PURE__*/function () {
       this._selected_item_idx = 0;
     }
 
-    if (this.current_selected_item.isDisabled) {
+    if ((_this$current_selecte = this.current_selected_item) != null && _this$current_selecte.isDisabled) {
       this.moveSelection(up);
     }
   }
@@ -629,28 +672,23 @@ var MenuCore = /*#__PURE__*/function () {
 }();
 MenuCore.MENU_TYPE = "DEFAULT_MENU";
 
-function setCursorPosition(x, y) {
-  process.stdout.cursorTo(x, y);
-}
-
+/**
+ * TODO: Warp all the `console` methods, to move the cursor to ender the menu and then call the orignal method
+ */
 function renderScreenBuffer(buffer, options) {
-  var _options$cache, _options$cache$map$jo, _options$cache$map;
-
   if (options === void 0) {
     options = {};
   }
 
   var height = 0;
+  var mouseY = getCursorPosition().y;
 
   if (!options.cache) {
-    options.cache = [];
+    options.cache = {
+      buffer_cache: []
+    };
   }
 
-  fs.writeFileSync("./menu.log", "[current buffer]:\n" + buffer.map(function (line) {
-    return line.toString();
-  }).join("\n") + "\n\n[last buffer]:\n" + ((_options$cache = options.cache) == null ? void 0 : _options$cache.map == null ? void 0 : (_options$cache$map$jo = (_options$cache$map = _options$cache.map(function (line) {
-    return line.toString();
-  })).join) == null ? void 0 : _options$cache$map$jo.call(_options$cache$map, "\n")));
   var cache_rendered_lines = [];
 
   while (height < buffer.length) {
@@ -659,7 +697,7 @@ function renderScreenBuffer(buffer, options) {
 
     var _current_point = -1;
 
-    setCursorPosition(0, height);
+    setCursorPosition(0, height + mouseY);
 
     while (current_line[1].length > ++_current_point) {
       var current_str = current_line[1][_current_point];
@@ -680,25 +718,27 @@ function renderScreenBuffer(buffer, options) {
       }
     }
 
-    if (cache_rendered_lines[height] < options.cache[height]) {
-      process.stdout.write(' '.repeat(options.cache[height] - cache_rendered_lines[height] + 1));
+    if (cache_rendered_lines[height] < options.cache.buffer_cache[height]) {
+      process.stdout.write(' '.repeat(options.cache.buffer_cache[height] - cache_rendered_lines[height] + 1));
     }
 
     height++;
   }
 
-  if (cache_rendered_lines.length < options.cache.length) {
-    for (var i = cache_rendered_lines.length; i < options.cache.length; i++) {
+  if (cache_rendered_lines.length < options.cache.buffer_cache.length) {
+    for (var i = cache_rendered_lines.length; i < options.cache.buffer_cache.length; i++) {
       setCursorPosition(0, height++);
-      process.stdout.write(' '.repeat(options.cache[i]));
+      process.stdout.write(' '.repeat(options.cache.buffer_cache[i]));
     }
-  }
+  } // if(options.curser_under_screen) {
+  //     // setCursorPosition(0, buffer.length)
+  // }
 
-  if (options.curser_under_screen) {
-    setCursorPosition(0, buffer.length);
-  }
 
-  return cache_rendered_lines;
+  setCursorPosition(0, mouseY);
+  return {
+    buffer_cache: cache_rendered_lines
+  };
 }
 
 var MenuHeader = /*#__PURE__*/function (_MenuItem) {
@@ -836,7 +876,7 @@ var Menu = /*#__PURE__*/function (_MenuCore) {
     if (!this._cache) return;
     var hidden_buffer = [];
 
-    for (var _iterator = _createForOfIteratorHelperLoose(this._cache), _step; !(_step = _iterator()).done;) {
+    for (var _iterator = _createForOfIteratorHelperLoose(this._cache.buffer_cache), _step; !(_step = _iterator()).done;) {
       var line = _step.value;
       hidden_buffer.push([0, [' '.repeat(line)]]);
     }

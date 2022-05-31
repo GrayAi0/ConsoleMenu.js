@@ -1,14 +1,30 @@
+/**
+ * GetConsoleScreenBufferInfo
+ *
+ * dwSize x: offest 0 size 2
+ * dwSize y: offest 2 size 2
+ * dwCursorPosition x: offest 4 size 2
+ * dwCursorPosition y: offest 6 size 2
+ * wAttributes: offest 8 size 2
+ * srWindowLeft: offest 10 size 2
+ * srWindowTop: offest 12 size 2
+ * srWindowRight: offest 14 size 2
+ * srWindowBottom: offest 16 size 2
+ * dwMaximumWindowSize x: offest 18 size 2
+ * dwMaximumWindowSize y: offest 20 size 2
+ *
+ *
+ */
+export declare const kernal: any;
 export declare enum Color {
     FOREGROUND_BLUE = 1,
     FOREGROUND_GREEN = 2,
     FOREGROUND_RED = 4,
     FOREGROUND_INTENSITY = 8,
-    FOREGROUND_RESET = 15,
     BACKGROUND_BLUE = 16,
     BACKGROUND_GREEN = 32,
     BACKGROUND_RED = 64,
     BACKGROUND_INTENSITY = 128,
-    BACKGROUND_RESET = 256,
     COMMON_LVB_LEADING_BYTE = 256,
     COMMON_LVB_TRAILING_BYTE = 512,
     COMMON_LVB_GRID_HORIZONTAL = 1024,

@@ -126,7 +126,9 @@ export default abstract class MenuCore {
             else this.render();
 
         }else if(key.name === 'left') {
-            this.current_selected_item.onClicked()
+            if(this.current_selected_item) {
+                this.current_selected_item.onClicked()
+            }
             this.render()
         }
     }
@@ -205,7 +207,7 @@ export default abstract class MenuCore {
             this._selected_item_idx = 0;
         }
 
-        if(this.current_selected_item.isDisabled) {
+        if(this.current_selected_item?.isDisabled) {
             this.moveSelection(up);
         }
 

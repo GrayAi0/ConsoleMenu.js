@@ -1,7 +1,26 @@
 
 import * as ffi from 'ffi-napi';
 
-const kernal = ffi.Library('kernel32', {
+
+/**
+ * GetConsoleScreenBufferInfo
+ * 
+ * dwSize x: offest 0 size 2
+ * dwSize y: offest 2 size 2
+ * dwCursorPosition x: offest 4 size 2
+ * dwCursorPosition y: offest 6 size 2
+ * wAttributes: offest 8 size 2
+ * srWindowLeft: offest 10 size 2
+ * srWindowTop: offest 12 size 2
+ * srWindowRight: offest 14 size 2
+ * srWindowBottom: offest 16 size 2
+ * dwMaximumWindowSize x: offest 18 size 2
+ * dwMaximumWindowSize y: offest 20 size 2
+ * 
+ * 
+ */
+
+export const kernal = ffi.Library('kernel32', {
     'GetStdHandle': ['int', ['int']],
     'SetConsoleTextAttribute': ['int', ['int', 'int']],
     "GetConsoleScreenBufferInfo": ['int', ['int', 'pointer']]
@@ -13,12 +32,10 @@ export enum Color {
     FOREGROUND_GREEN = 0x0002,	// Text color contains green.
     FOREGROUND_RED = 0x0004,	// Text color contains red.
     FOREGROUND_INTENSITY = 0x0008,	// Text color is intensified.
-    FOREGROUND_RESET = 0x000F,
     BACKGROUND_BLUE = 0x0010,	// Background color contains blue.
     BACKGROUND_GREEN = 0x0020,	// Background color contains green.
     BACKGROUND_RED = 0x0040,	// Background color contains red.
     BACKGROUND_INTENSITY = 0x0080,	// Background color is intensified.
-    BACKGROUND_RESET = 256,
     COMMON_LVB_LEADING_BYTE = 0x0100,	// Leading byte.
     COMMON_LVB_TRAILING_BYTE = 0x0200,	// Trailing byte.
     COMMON_LVB_GRID_HORIZONTAL = 0x0400,	// Top horizontal.
@@ -48,7 +65,7 @@ export class RenderColor {
     private static getCurrentColor(): number {
         const handle = kernal.GetStdHandle(/** Default Console Handle */ -11);
         
-        const buff = Buffer.alloc(16 /** sizeof(CONSOLE_SCREEN_BUFFER_INFO) == 16 */) 
+        const buff = Buffer.alloc(22 /** sizeof(CONSOLE_SCREEN_BUFFER_INFO) == 22 */) 
 
         /** @ts-ignore */
         kernal.GetConsoleScreenBufferInfo(handle, buff);
@@ -59,7 +76,7 @@ export class RenderColor {
     public static applyColor(color: number) {
         const handle = kernal.GetStdHandle(/** Default Console Handle */ -11);
         
-        const buff = Buffer.alloc(16 /** sizeof(CONSOLE_SCREEN_BUFFER_INFO) == 16 */) 
+        const buff = Buffer.alloc(22 /** sizeof(CONSOLE_SCREEN_BUFFER_INFO) == 22 */) 
 
         /** @ts-ignore */
         kernal.GetConsoleScreenBufferInfo(handle, buff);

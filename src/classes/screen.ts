@@ -1,6 +1,8 @@
-import { setCursorPosition } from "./console-utils";
+/**
+ * TODO: Warp all the `console` methods, to move the cursor to ender the menu and then call the orignal method
+ */
+import { getCursorPosition, setCursorPosition } from "./console-utils";
 import { RenderColor } from '../helpers/rendering'
-import { writeFileSync } from "fs";
 
 // let _flag_c = 0;
 // const flag = () => 1 << _flag_c++
@@ -16,7 +18,7 @@ import { writeFileSync } from "fs";
 export type RenderableLine = [/** flags */ number, (string | [ /** colors flags */ number, /** string to render */ string ])[]] 
 export type ScreenBuffer = RenderableLine[]
 
-export type ScreenCache = number[]
+export type ScreenCache = { buffer_cache: number[] }
 
 
 export interface ScreenOptions {
@@ -27,20 +29,14 @@ export interface ScreenOptions {
 export default function renderScreenBuffer(buffer: ScreenBuffer, options: ScreenOptions = {}): ScreenCache {
 
     let height = 0;
+    let mouseY = getCursorPosition().y
 
     if(!options.cache) {
-        options.cache = []
+        options.cache = { buffer_cache: [] }
     }
 
-    writeFileSync(
-        "./menu.log",
-        "[current buffer]:\n" +
-        buffer.map(line => line.toString()).join("\n") +
-        "\n\n[last buffer]:\n" +
-        options.cache?.map?.(line => line.toString()).join?.("\n")
-    );
 
-    const cache_rendered_lines: ScreenCache = []
+    const cache_rendered_lines: number[] = []
 
     while(height < buffer.length) {
         
@@ -51,7 +47,7 @@ export default function renderScreenBuffer(buffer: ScreenBuffer, options: Screen
 
         let _current_point = -1
 
-        setCursorPosition(0, height)
+        setCursorPosition(0, height+mouseY)
 
         while(current_line[1].length >++ _current_point) {
 
@@ -79,10 +75,10 @@ export default function renderScreenBuffer(buffer: ScreenBuffer, options: Screen
             }
         }
 
-        if(cache_rendered_lines[height] < options.cache[height]) {
+        if(cache_rendered_lines[height] < options.cache.buffer_cache[height]) {
             process.stdout.write(
                 ' '.repeat(
-                    options.cache[height] - cache_rendered_lines[height] + 1
+                    options.cache.buffer_cache[height] - cache_rendered_lines[height] + 1
                 )
             )
         }
@@ -90,20 +86,22 @@ export default function renderScreenBuffer(buffer: ScreenBuffer, options: Screen
         height++;
     }
 
-    if(cache_rendered_lines.length < options.cache.length) {
-        for(let i = cache_rendered_lines.length; i < options.cache.length; i++) {
+    if(cache_rendered_lines.length < options.cache.buffer_cache.length) {
+        for(let i = cache_rendered_lines.length; i < options.cache.buffer_cache.length; i++) {
             setCursorPosition(0, height++)
             process.stdout.write(
                 ' '.repeat(
-                    options.cache[i]
+                    options.cache.buffer_cache[i]
                 )
             )
         }
     }
 
-    if(options.curser_under_screen) {
-        setCursorPosition(0, buffer.length)
-    }
+    // if(options.curser_under_screen) {
+    //     // setCursorPosition(0, buffer.length)
+    // }
 
-    return cache_rendered_lines;
+    setCursorPosition(0, mouseY);
+
+    return { buffer_cache: cache_rendered_lines };
 }

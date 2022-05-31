@@ -1,6 +1,8 @@
 export declare type RenderableLine = [/** flags */ number, (string | [/** colors flags */ number, /** string to render */ string])[]];
 export declare type ScreenBuffer = RenderableLine[];
-export declare type ScreenCache = number[];
+export declare type ScreenCache = {
+    buffer_cache: number[];
+};
 export interface ScreenOptions {
     cache?: ScreenCache;
     curser_under_screen?: boolean;

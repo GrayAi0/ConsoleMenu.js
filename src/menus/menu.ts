@@ -1,11 +1,11 @@
 
-import MenuCore, { MenuPropertys } from "../structs/menu-core";
 import { createInterface } from "readline";
+import { Color } from '../helpers/rendering';
+import { setCursorPosition } from '../classes/console-utils';
+import MenuCore, { MenuPropertys } from "../structs/menu-core";
 import renderScreenBuffer, { RenderableLine, ScreenBuffer, ScreenCache } from "../classes/screen";
 import MenuHeader from "../items/natives/menu-header";
 import MenuFooter from '../items/natives/menu-footer';
-import { Color } from '../helpers/rendering';
-import { setCursorPosition } from '../classes/console-utils';
 import MenuItem from '../structs/menu-item';
 
 /** Initialize the stdin for us */
@@ -38,7 +38,6 @@ export default class Menu extends MenuCore {
     public initialize(): void {
         this.moveSelection(false)
         process.stdin.on('keypress', this._on_key_down.bind(this))
-
     }
 
     public dispose() {
@@ -54,7 +53,7 @@ export default class Menu extends MenuCore {
 
         const hidden_buffer: ScreenBuffer = []
 
-        for(const line of this._cache) {
+        for(const line of this._cache.buffer_cache) {
             hidden_buffer.push([
                 0,
                 [
