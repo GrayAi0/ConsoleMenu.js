@@ -2,7 +2,7 @@
 # ConsoleMenu.js Beta
 
 
-Privew for the menu (This is the example menu) 
+### Privew for the menu (This is the example menu)<br>
 ![Menu Privew](https://github.com/GrayAi0/ConsoleMenu.js/blob/master/preview/console-menu-privew.js.png?raw=true)
 
 
@@ -10,24 +10,18 @@ Privew for the menu (This is the example menu)
 
 
 
-## Example
+## Example Menu
 
 ```ts
 try {
     require('source-map-support/register')
 } catch(err) {
-
 }
-
 import { Button, CheckButton, Menu, SubMenu } from './src';
-
-
 export default function example() {
-
     let menu = new Menu(
         "ConsoleMenu.js Beta"
     );
-
     menu.append(
         new Button(
             `Normal Button`, 
@@ -38,7 +32,6 @@ export default function example() {
             }
         )
     )
-
     const exSubMenu = new SubMenu(
         "SubMenu",
         new Menu(
@@ -48,7 +41,6 @@ export default function example() {
             }
         )
     )
-
     exSubMenu.subMenu.append(
         new Button(
             "SubMenu Button",
@@ -59,13 +51,10 @@ export default function example() {
             }
         )
     )
-
     menu.append(exSubMenu)
-
     menu.append(new CheckButton(
         "Hide Menu",
         {
-
             /**
              * On the item clicked event
              */
@@ -78,7 +67,6 @@ export default function example() {
             }
         }
     ))
-
     let _has_checked = false
     const canCheckMeButton = new CheckButton(
         "Can you uncheck me ?",
@@ -87,19 +75,16 @@ export default function example() {
              * Check the item by default
              */
             checked: true,
-
             /**
              * Disable the item by default
              */
             disabled: true,
-
             onClicked(this, is_checked) {
                 if(!is_checked && !_has_checked) {
                     _has_checked = true
                     this.menu.showMessage("Will done !!!", 3000)
                 }
             },
-
         }
     )
     
@@ -117,10 +102,8 @@ export default function example() {
             },
         }
     )
-
     menu.append(canCheckMeButton)
     menu.append(enableCheckMeButton)
-
     menu.append(new Button(
         "Exit",
         {
@@ -130,13 +113,9 @@ export default function example() {
             }
         }        
     ))
-
-
     menu.initialize();
     menu.render();
-
 }
-
 /** __name__ == "__main__" */
 if(require.main === module) {
     example()
