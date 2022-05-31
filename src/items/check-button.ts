@@ -1,5 +1,5 @@
 import Menu from "../menus/menu";
-import { byteOnly, centerString } from "../helpers/rendering";
+import { byteOnly } from "../helpers/rendering";
 import MenuItem, { MenuItemProps } from "../structs/menu-item";
 
 

@@ -4,7 +4,7 @@ try {
 
 }
 
-import { Button, CheckButton, Menu, SubMenu } from '.';
+import { Button, CheckButton, Menu, SubMenu } from './src';
 
 
 export default function example() {
