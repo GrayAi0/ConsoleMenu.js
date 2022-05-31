@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+      "outDir": "./dist",
+      "moduleResolution": "Node",
+      "module": "commonjs",
+      "target": "ESNext",
+      "removeComments": false,
+      "declaration": true,
+      "sourceMap": true,
+      "allowJs": true,
+      "noImplicitAny": false,
+      "lib": [
+          "DOM",
+      ],
+  },
+  "exclude": ["node_modules", "./dist"]
+}

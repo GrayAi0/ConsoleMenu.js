@@ -1,0 +1,19 @@
+{
+  "name": "consolemenu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/ffi-napi": "^4.0.4",
+    "source-map-support": "^0.5.21"
+  },
+  "dependencies": {
+    "ffi-napi": "^3.0.0",
+    "word-wrap": "^1.2.3"
+  }
+}
