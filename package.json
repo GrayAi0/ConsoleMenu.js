@@ -1,19 +1,62 @@
 {
-  "name": "consolemenu",
-  "version": "1.0.0",
+  "name": "console-menu.js",
+  "version": "0.1.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "main": "dist/index.js",
+  "module": "dist/console-menu.js.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
   },
-  "author": "",
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "author": "GrayAi0",
   "license": "ISC",
   "devDependencies": {
+    "@size-limit/preset-small-lib": "^7.0.8",
     "@types/ffi-napi": "^4.0.4",
-    "source-map-support": "^0.5.21"
+    "@types/jest": "^27.5.1",
+    "husky": "^8.0.1",
+    "size-limit": "^7.0.8",
+    "source-map-support": "^0.5.21",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.4.0",
+    "typescript": "^4.7.2"
   },
   "dependencies": {
     "ffi-napi": "^3.0.0",
     "word-wrap": "^1.2.3"
+  },
+  "size-limit": [
+    {
+      "path": "dist/console-menu.js.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/console-menu.js.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }

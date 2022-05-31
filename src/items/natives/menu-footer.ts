@@ -2,7 +2,7 @@ import { centerString } from "../../helpers/rendering";
 import { MenuPropertys } from "../../structs/menu-core";
 import MenuItem from "../../structs/menu-item";
 import { RenderableLine } from "../../classes/screen";
-import wrap = require('word-wrap');
+import wrap from 'word-wrap';
 
 
 

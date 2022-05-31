@@ -1,4 +1,3 @@
-import Screen from "../classes/screen";
 import format from "../helpers/formater";
 import MenuItem from "./menu-item";
 

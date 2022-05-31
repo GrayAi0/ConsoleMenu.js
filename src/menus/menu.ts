@@ -71,7 +71,7 @@ export default class Menu extends MenuCore {
         this.render()
     }
 
-    public render(width: number = this.propertys.minimal_width) {
+    public render(width: number = this.propertys.minimal_width): void {
 
         if(this._is_menu_hidden) return;
 
@@ -121,8 +121,7 @@ export default class Menu extends MenuCore {
                     buffer.push(
                         this._render(
                             this.propertys.between_items_style.repeat(width),
-                            false,
-                            null
+                            false
                         )
                     )
                 }
@@ -143,7 +142,7 @@ export default class Menu extends MenuCore {
     }
 
 
-    private _render(rendered_data: string, is_selected: boolean, item: MenuItem): RenderableLine {
+    private _render(rendered_data: string, is_selected: boolean, item?: MenuItem): RenderableLine {
 
         return [
             0,

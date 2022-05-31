@@ -2,16 +2,16 @@ import { setCursorPosition } from "./console-utils";
 import { RenderColor } from '../helpers/rendering'
 import { writeFileSync } from "fs";
 
-let _flag_c = 0;
-const flag = () => 1 << _flag_c++
-const flag_containt = (flags: number, d: number) => (d & flags) === d
+// let _flag_c = 0;
+// const flag = () => 1 << _flag_c++
+// const flag_containt = (flags: number, d: number) => (d & flags) === d
 
 //const array_same = (a: any[], b: any[]) => a.length === b.length && a.every((v, i) => v === b[i])
 
-export enum Flags {
+// export enum Flags {
     
 
-}
+// }
 
 export type RenderableLine = [/** flags */ number, (string | [ /** colors flags */ number, /** string to render */ string ])[]] 
 export type ScreenBuffer = RenderableLine[]
@@ -65,10 +65,12 @@ export default function renderScreenBuffer(buffer: ScreenBuffer, options: Screen
             )
 
             if(is_color) {
+                /** @ts-ignore: if is_color is true that mean current_str[0] is number */
                 RenderColor.applyColor(current_str[0])
             }
 
             process.stdout.write(
+                /** @ts-ignore: ??? */
                 is_color ? current_str[1] : current_str
             )
 

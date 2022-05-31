@@ -1,4 +1,3 @@
-import { ScreenBuffer } from "../classes/screen";
 import MenuCore from "./menu-core";
 
 
@@ -9,7 +8,7 @@ export interface ItemRenderResult {
 
 export interface MenuItemProps {
     is_countless: boolean,
-    onClicked: (this: MenuItem) => void,
+    onClicked: (this: MenuItem) => any,
     onKeyDown: (this: MenuItem, key: any) => void,
     disabled: boolean,
 }
@@ -19,7 +18,9 @@ export default abstract class MenuItem<M extends MenuCore = MenuCore> {
     
     readonly ITEM_TYPE: string = "DEFAULT_ITEM";
     protected _is_disabled: boolean = false;
+    /** @ts-ignore: Defined afeter calling MenuCore.append() */
     private _id: string;
+    /** @ts-ignore: Defined afeter calling MenuCore.append() */
     private _menu: M
 
     public readonly propertys: MenuItemProps;
@@ -94,7 +95,7 @@ export default abstract class MenuItem<M extends MenuCore = MenuCore> {
         this.propertys.onKeyDown.bind(this)(key);
     }
 
-    public onClicked(...args: any[]) {
+    public onClicked(...args: any[]): any {
         /** @ts-ignore */
         return this.propertys.onClicked.bind(this)(...args);
     }

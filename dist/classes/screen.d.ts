@@ -1,6 +1,4 @@
-export declare enum Flags {
-}
-export declare type RenderableLine = [ /** flags *//** flags */ number, (string | [ /** colors flags *//** colors flags */ number, /** string to render */ string])[]];
+export declare type RenderableLine = [/** flags */ number, (string | [/** colors flags */ number, /** string to render */ string])[]];
 export declare type ScreenBuffer = RenderableLine[];
 export declare type ScreenCache = number[];
 export interface ScreenOptions {

@@ -9,6 +9,6 @@ export default class Menu extends MenuCore {
     dispose(): void;
     protected _hide(): void;
     protected _show(): void;
-    render(width?: number): any;
+    render(width?: number): void;
     private _render;
 }

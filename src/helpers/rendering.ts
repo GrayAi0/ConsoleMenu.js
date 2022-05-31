@@ -1,5 +1,5 @@
 
-import ffi = require('ffi-napi');
+import * as ffi from 'ffi-napi';
 
 const kernal = ffi.Library('kernel32', {
     'GetStdHandle': ['int', ['int']],
