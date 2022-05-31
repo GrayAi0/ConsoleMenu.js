@@ -3,7 +3,7 @@
 
 
 
-
+![Light mode by default](https://github.com/GrayAi0/ConsoleMenu/blob/main/review/Menu-light-mode.png?raw=true)
 
 
 
