@@ -417,7 +417,7 @@ var MenuCore = /*#__PURE__*/function () {
       between_items_padding: 1,
       message_item_selected: false,
       message_item_format: "Item ${index} selected",
-      minimal_width: 5
+      minimal_width: 10
     }, propertys);
   } // protected _screen: Screen = new Screen()
 
@@ -824,7 +824,7 @@ var MenuFooter = /*#__PURE__*/function (_MenuItem) {
 
 /** Initialize the stdin for us */
 
-createInterface({
+var RL = /*#__PURE__*/createInterface({
   input: process.stdin,
   output: process.stdout
 });
@@ -1038,6 +1038,7 @@ module.exports.Button = Button;
 module.exports.CheckButton = CheckButton;
 module.exports.SubMenu = SubMenu;
 module.exports.Menu = Menu;
+module.exports.RL = RL;
 
-export { Button, CheckButton, Menu, SubMenu };
+export { Button, CheckButton, Menu, RL, SubMenu };
 //# sourceMappingURL=console-menu.js.esm.js.map

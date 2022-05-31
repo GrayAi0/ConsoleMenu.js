@@ -70,7 +70,7 @@ export default abstract class MenuCore {
             message_item_selected: false,
             message_item_format: "Item ${index} selected",
 
-            minimal_width: 5,
+            minimal_width: 10,
 
         }, propertys)
     }

@@ -9,7 +9,7 @@ import MenuFooter from '../items/natives/menu-footer';
 import MenuItem from '../structs/menu-item';
 
 /** Initialize the stdin for us */
-createInterface({
+export const RL = createInterface({
     input: process.stdin,
     output: process.stdout,
 })
