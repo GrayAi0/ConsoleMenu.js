@@ -4,6 +4,6 @@ import { RenderableLine } from "../../classes/screen";
 export default class MenuFooter extends MenuItem {
     constructor();
     /** @ts-ignore */
-    render(log: string, width: number, props: MenuPropertys): RenderableLine[];
+    render(messages: string[], width: number, props: MenuPropertys): RenderableLine[];
     private _render;
 }

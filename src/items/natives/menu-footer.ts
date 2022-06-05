@@ -16,29 +16,51 @@ export default class MenuFooter extends MenuItem {
     }
 
     /** @ts-ignore */
-    public render(log: string, width: number, props: MenuPropertys): RenderableLine[] {
+    public render(messages: string[], width: number, props: MenuPropertys): RenderableLine[] {
 
-        const footer_labels = wrap(log, { width: width - (props.padding * 2) }).split('\n').map(lbl => centerString(lbl, width))
+        const labels: RenderableLine[] = []
+        let max_length = width;
+        for(const idx in messages) {
+            const message = messages[idx]
+            const footer_labels = wrap(message, { width: width - (props.padding * 2) }).split('\n').map(lbl => centerString(lbl, width))
+            
+            const _max_length = footer_labels.map(lbl => lbl.length).reduce((prev, cur) => Math.max(prev, cur)) as number
+            
+            max_length = Math.max(_max_length, max_length)
+            
+            labels.push(
+                ...footer_labels.map(lbl => (
+                    this._render(lbl, props)
+                )),
+
+                this._render(
+                    props.footer_style.repeat(max_length + props.padding * 2),
+                    props,
+                    /** @ts-ignore */
+                    idx == messages.length - 1,
+                    true
+                )
+            )
+        }
         
-        let max_length = footer_labels.map(lbl => lbl.length).reduce((prev, cur) => Math.max(prev, cur)) as number
 
 
         return [
             this._render(
                 props.footer_style.repeat(max_length + props.padding * 2),
                 props,
-                false,
+                !labels.length,
                 true
             ),
             
-            ...footer_labels.map(label => this._render(label, props)),
+            ...labels,
 
-            this._render(
-                props.footer_style.repeat(max_length + (props.padding * 2)),
-                props,
-                true,
-                true
-            )
+            // this._render(
+            //     props.footer_style.repeat(max_length + (props.padding * 2)),
+            //     props,
+            //     true,
+            //     true
+            // )
         ]
     }
 

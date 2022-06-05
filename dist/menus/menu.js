@@ -63,7 +63,7 @@ var Menu = /** @class */ (function (_super) {
         // Rendering the menu header
         var _a = this._menu_header.render(width, this.propertys), header_width = _a[0], rendered_menu_header = _a.slice(1);
         width = header_width;
-        var rendered_menu_footer = this._menu_footer.render(this._messages.map(function (msg) { return msg.message; }).join('\n'), width, this.propertys);
+        var rendered_menu_footer = this._menu_footer.render(this._messages.map(function (msg) { return msg.message; }), width, this.propertys);
         // Rendering the menu footer
         for (var idx in this._items) {
             var item = this._items[idx];

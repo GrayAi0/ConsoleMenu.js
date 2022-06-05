@@ -80,7 +80,7 @@ export default class Menu extends MenuCore {
         width = header_width
 
         const rendered_menu_footer = this._menu_footer.render(
-            this._messages.map(msg => msg.message).join('\n'),
+            this._messages.map(msg => msg.message),
             width,
             this.propertys
         )

@@ -29,10 +29,10 @@ export default function example() {
 
     exSubMenu.subMenu.append(
         new Button(
-            `Normal Button`, 
+            "Normal Button", 
             {
                 clicked(btn) {
-                    btn.menu.showMessage(`Message !`, 100000);
+                    btn.menu.showMessage("Message !");
                 },
             }
         )
