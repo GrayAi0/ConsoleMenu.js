@@ -7,23 +7,25 @@ export interface MenuPropertys extends MenuStyle {
     message_item_format: string;
     minimal_width: number;
 }
+export interface IDMessage {
+    id: number;
+    message: string;
+}
 export default abstract class MenuCore {
     static readonly MENU_TYPE: string;
     protected readonly propertys: MenuPropertys;
     protected _selected_item_idx: number;
     protected _items: MenuItem[];
-    protected _message: string;
+    protected _messages: IDMessage[];
     private _message_timeout_tmo;
     protected _is_menu_locked: boolean;
     protected _is_menu_hidden: boolean;
+    private _max_id_msg;
     get current_selected_item(): MenuItem;
     get selected_item_idx(): number;
     constructor(propertys?: Partial<MenuPropertys>);
-    showMessage(message: string, timeout?: number): void;
-    /**
-     * Call this.showMessage("", -1)
-     */
-    clearMessage(): void;
+    showMessage(message: string, timeout?: number): number;
+    clearMessage(id: number): void;
     protected _on_key_down(keydat: string | undefined, key: any): void;
     /**
      * Lock the menu control

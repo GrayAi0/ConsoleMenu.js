@@ -18,6 +18,11 @@ export interface MenuPropertys extends MenuStyle {
     minimal_width: number
 }
 
+export interface IDMessage {
+    id: number,
+    message: string
+}
+
 export default abstract class MenuCore {
 
     public static readonly MENU_TYPE: string = "DEFAULT_MENU";
@@ -25,13 +30,12 @@ export default abstract class MenuCore {
     
     protected _selected_item_idx: number = -1
     protected _items: MenuItem[] = []
-    protected _message: string = "";
+    protected _messages: IDMessage[] = [];
     private _message_timeout_tmo: NodeJS.Timeout | undefined;
     
     protected _is_menu_locked: boolean = false;
     protected _is_menu_hidden: boolean = false;
-    // protected _screen: Screen = new Screen()
-
+    private _max_id_msg = 0;
 
     public get current_selected_item(): MenuItem {
         return this._items[this._selected_item_idx];
@@ -64,23 +68,23 @@ export default abstract class MenuCore {
 
 
 
-    public showMessage(message: string, timeout: number = -1) {
-        this._message = message
+    public showMessage(message: string, timeout?: number) {
+        const _msg_id = this._max_id_msg++;
+
+        this._messages.push(
+            { id: _msg_id, message: message }
+        )
+
         this.render()
-        if(timeout > 0) {
-            clearTimeout(this._message_timeout_tmo)
-            this._message_timeout_tmo = setTimeout(() => {
-                this.clearMessage()
-                this.render()
-            }, timeout)
-        }
+        setTimeout(() => {
+            this.clearMessage(_msg_id)
+            this.render()
+        }, timeout || 4000)
+        return _msg_id
     }
 
-    /**
-     * Call this.showMessage("", -1)
-     */
-    public clearMessage() {
-        this.showMessage("", -1)
+    public clearMessage(id: number) {
+        this._messages = this._messages.filter(msg => msg.id != id)
     }
 
     protected _on_key_down(keydat: string | undefined, key: any) {

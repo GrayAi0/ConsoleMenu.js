@@ -32,7 +32,7 @@ export default function example() {
             `Normal Button`, 
             {
                 clicked(btn) {
-                    btn.menu.showMessage(`Message !`);
+                    btn.menu.showMessage(`Message !`, 100000);
                 },
             }
         )

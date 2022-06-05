@@ -9,9 +9,10 @@ var MenuCore = /** @class */ (function () {
         if (propertys === void 0) { propertys = {}; }
         this._selected_item_idx = -1;
         this._items = [];
-        this._message = "";
+        this._messages = [];
         this._is_menu_locked = false;
         this._is_menu_hidden = false;
+        this._max_id_msg = 0;
         this.propertys = Object.assign((0, styles_1.default)('normal', {
             padding: 2,
             between_items_padding: 1,
@@ -21,7 +22,6 @@ var MenuCore = /** @class */ (function () {
         }), propertys);
     }
     Object.defineProperty(MenuCore.prototype, "current_selected_item", {
-        // protected _screen: Screen = new Screen()
         get: function () {
             return this._items[this._selected_item_idx];
         },
@@ -37,22 +37,17 @@ var MenuCore = /** @class */ (function () {
     });
     MenuCore.prototype.showMessage = function (message, timeout) {
         var _this = this;
-        if (timeout === void 0) { timeout = -1; }
-        this._message = message;
+        var _msg_id = this._max_id_msg++;
+        this._messages.push({ id: _msg_id, message: message });
         this.render();
-        if (timeout > 0) {
-            clearTimeout(this._message_timeout_tmo);
-            this._message_timeout_tmo = setTimeout(function () {
-                _this.clearMessage();
-                _this.render();
-            }, timeout);
-        }
+        setTimeout(function () {
+            _this.clearMessage(_msg_id);
+            _this.render();
+        }, timeout || 4000);
+        return _msg_id;
     };
-    /**
-     * Call this.showMessage("", -1)
-     */
-    MenuCore.prototype.clearMessage = function () {
-        this.showMessage("", -1);
+    MenuCore.prototype.clearMessage = function (id) {
+        this._messages = this._messages.filter(function (msg) { return msg.id != id; });
     };
     MenuCore.prototype._on_key_down = function (keydat, key) {
         if (this._is_menu_locked)
