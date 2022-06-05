@@ -13,12 +13,7 @@ var MenuFooter = /** @class */ (function (_super) {
     MenuFooter.prototype.render = function (log, width, props) {
         var _this = this;
         var footer_labels = (0, word_wrap_1.default)(log, { width: width - (props.padding * 2) }).split('\n').map(function (lbl) { return (0, rendering_1.centerString)(lbl, width); });
-        /** @ts-ignore */
-        var max_length = footer_labels.reduce(function (prev, cur) { return Math.max(prev.length, cur.length); });
-        if (typeof max_length === 'string') {
-            /** @ts-ignore */
-            max_length = max_length.length;
-        }
+        var max_length = footer_labels.map(function (lbl) { return lbl.length; }).reduce(function (prev, cur) { return Math.max(prev, cur); });
         return (0, tslib_1.__spreadArray)((0, tslib_1.__spreadArray)([
             this._render(props.footer_style.repeat(max_length + props.padding * 2), props, false, true)
         ], footer_labels.map(function (label) { return _this._render(label, props); }), true), [

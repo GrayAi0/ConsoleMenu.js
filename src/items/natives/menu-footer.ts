@@ -20,13 +20,7 @@ export default class MenuFooter extends MenuItem {
 
         const footer_labels = wrap(log, { width: width - (props.padding * 2) }).split('\n').map(lbl => centerString(lbl, width))
         
-        /** @ts-ignore */
-        let max_length = footer_labels.reduce((prev, cur) => Math.max(prev.length, cur.length)) as number
-
-        if(typeof max_length === 'string') {
-            /** @ts-ignore */
-            max_length = max_length.length 
-        }
+        let max_length = footer_labels.map(lbl => lbl.length).reduce((prev, cur) => Math.max(prev, cur)) as number
 
 
         return [
