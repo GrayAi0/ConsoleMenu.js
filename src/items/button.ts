@@ -1,24 +1,32 @@
-import { centerString } from "../helpers/rendering";
-import MenuItem, { MenuItemProps } from "../structs/menu-item";
+import Label from "../componet/label";
+import { byteOnly, centerString } from "../helpers/rendering";
+import MenuCore from "../structs/menu-core";
+import MenuItem, { DefaultEvents, Events, MenuItemProps } from "../structs/menu-item";
 
 
 
 
 
-export interface ButtonProps extends Omit<MenuItemProps, 'onClicked'> {
-    onClicked: (this: Button) => void,
+export interface ButtonProps extends MenuItemProps<Button> {
+    
 }
 
+export default class Button extends MenuItem<ButtonProps, MenuCore, { clicked: (btn: Button) => void }> {
 
-export default class Button extends MenuItem {
-
+    public static readonly RIGHT_ICON = "[↲]";
 
     constructor(
         label: string,
         props: Partial<ButtonProps> = {},
-    ) { super(label, props as any) };
+    ) { super(label, props) };
 
     public render(width: number) {
-        return centerString(this.label, width); 
+        return new Label({
+            label: this.label + " ",
+            rightIcon: {
+                icon: Button.RIGHT_ICON,
+                leftPadding: 0,
+            },
+        }).render(width) 
     }
 }

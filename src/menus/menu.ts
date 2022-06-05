@@ -3,7 +3,7 @@ import { createInterface } from "readline";
 import { Color } from '../helpers/rendering';
 import { setCursorPosition } from '../classes/console-utils';
 import MenuCore, { MenuPropertys } from "../structs/menu-core";
-import renderScreenBuffer, { RenderableLine, ScreenBuffer, ScreenCache } from "../classes/screen";
+import renderScreenBuffer, { RenderableLine, ScreenBuffer, screenCache, ScreenCache } from "../classes/screen";
 import MenuHeader from "../items/natives/menu-header";
 import MenuFooter from '../items/natives/menu-footer';
 import MenuItem from '../structs/menu-item';
@@ -19,8 +19,6 @@ export default class Menu extends MenuCore {
     private readonly _menu_header: MenuHeader;
     private readonly _menu_footer: MenuFooter;
     
-    private _cache?: ScreenCache = undefined
-
     constructor(
         private readonly _title: string = "Default Menu Title",
         props: Partial<MenuPropertys> = {}
@@ -49,15 +47,15 @@ export default class Menu extends MenuCore {
 
     protected _hide(): void {
 
-        if(!this._cache) return;
+        if(!screenCache?.buffer_cache) return;
 
         const hidden_buffer: ScreenBuffer = []
 
-        for(const line of this._cache.buffer_cache) {
+        for(const line of screenCache.buffer_cache) {
             hidden_buffer.push([
                 0,
                 [
-                    ' '.repeat(line)
+                    ' '.repeat(line[1])
                 ]
             ])
         }
@@ -80,10 +78,6 @@ export default class Menu extends MenuCore {
         
         const [ header_width, ...rendered_menu_header ] = this._menu_header.render(width, this.propertys)
         width = header_width
-
-        // if(rendered_menu_header[0][1][0].length > header_width) {
-        //     width = header_width
-        // }
 
         const rendered_menu_footer = this._menu_footer.render(
             this._message,
@@ -128,7 +122,7 @@ export default class Menu extends MenuCore {
         }
 
         // Redner the menu
-        this._cache = renderScreenBuffer([
+        renderScreenBuffer([
             // The header of the menu
             ...rendered_menu_header,
 
@@ -137,7 +131,8 @@ export default class Menu extends MenuCore {
 
             // // Rendered Footer
             ...rendered_menu_footer
-        ], { curser_under_screen: true, cache: this._cache })
+        ], { curser_under_screen: true, cache: true })
+
     }
 
 
@@ -192,7 +187,7 @@ export default class Menu extends MenuCore {
                 this.propertys.right_column_style + // "|"
     
                 // Selected item indicator
-                (is_selected ? " <--" : "") // " <-" or ""
+                (is_selected ? this.propertys.selected_arrow_style : "") // " <--" or ""
             ],
         ]
     }

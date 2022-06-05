@@ -1,3 +1,5 @@
+import * as ffi from 'ffi-napi';
+import { RenderableLine } from '../classes/screen';
 /**
  * GetConsoleScreenBufferInfo
  *
@@ -15,7 +17,11 @@
  *
  *
  */
-export declare const kernal: any;
+export declare const kernal: {
+    GetStdHandle: ffi.ForeignFunction<number, [number]>;
+    SetConsoleTextAttribute: ffi.ForeignFunction<number, [number, number]>;
+    GetConsoleScreenBufferInfo: ffi.ForeignFunction<number, [number, import("ref-napi").Pointer<unknown>]>;
+};
 export declare enum Color {
     FOREGROUND_BLUE = 1,
     FOREGROUND_GREEN = 2,
@@ -46,5 +52,6 @@ export declare class RenderColor {
     apply(): void;
     end(): void;
 }
+export declare function hashLine(line: RenderableLine): number;
 export declare function byteOnly(n: number): number;
 export declare function centerString(str: string, width: number): string;

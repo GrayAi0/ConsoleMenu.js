@@ -11,8 +11,7 @@ import Button from "./button";
 
 
 
-export interface SubMenuProps extends Omit<MenuItemProps, 'onClicked'> {
-    onClicked: (this: SubMenu) => void,
+export interface SubMenuProps extends MenuItemProps<SubMenu> {
 }
 
 
@@ -31,13 +30,19 @@ export default class SubMenu extends MenuItem {
         super(label, propertys as any)
         
         this._render_menu.lock()
-        this._render_menu.append(new Button("Return", {
-            onClicked: () => {
-                this.hide()
-            },
-        }))
-
+        
+        this._render_menu.append(new Button(
+            "Return",
+            {
+                /** Attach this.hide to the clicked events automatically */
+                clicked: this.hide.bind(this)
+            }   
+        ))
         this._render_menu.initialize()
+    }
+
+    public dispose() {
+        this._render_menu.getItem(0)!.off("clicked", this.hide)
     }
 
     public render(width: number) {

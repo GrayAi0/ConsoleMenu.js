@@ -1,10 +1,6 @@
+import { MenuStyle } from "../styles";
 import MenuItem from "./menu-item";
-export interface MenuPropertys {
-    left_column_style: string;
-    right_column_style: string;
-    header_style: string;
-    bottom_row_style: string;
-    between_items_style: string;
+export interface MenuPropertys extends MenuStyle {
     padding: number;
     between_items_padding: number;
     message_item_selected: boolean;

@@ -27,8 +27,9 @@ export default class MenuHeader extends MenuItem {
             header_label.length,
 
             this._render(
-                "-".repeat(header_label.length + props.padding * 2),
+                props.header_style.repeat((header_label.length + props.padding * 2)),
                 props,
+                true,
                 true
             ),
             
@@ -38,19 +39,20 @@ export default class MenuHeader extends MenuItem {
             ),
 
             this._render(
-                "-".repeat(header_label.length + (props.padding * 2)),
+                props.header_style.repeat(header_label.length + (props.padding * 2)),
                 props,
+                false,
                 true
             )
         ]
     }
 
-    private _render(item: string, props: MenuPropertys, _remove_padding?: boolean): RenderableLine {
+    private _render(item: string, props: MenuPropertys, is_top_line?: boolean, _remove_padding?: boolean): RenderableLine {
         return [
             0,
             [
                 // The left character of the menu
-                props.left_column_style + // "|"
+                (is_top_line ? props.top_left_corner_style : props.left_column_style) + // "|"
 
                 // The menu padding, before the item
                 (_remove_padding ? "" : ' '.repeat(props.padding)) +
@@ -62,7 +64,7 @@ export default class MenuHeader extends MenuItem {
                 (_remove_padding ? "" : ' '.repeat(props.padding)) +
                 
                 // The right character of the menu
-                props.right_column_style // "|"
+                (is_top_line ? props.top_right_corner_style : props.right_column_style) // "|"
             ]
         ]
     }

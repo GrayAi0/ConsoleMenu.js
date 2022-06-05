@@ -1,6 +1,8 @@
 import Menu from "../menus/menu";
 import { byteOnly } from "../helpers/rendering";
 import MenuItem, { MenuItemProps } from "../structs/menu-item";
+import MenuCore from "../structs/menu-core";
+import Label from "../componet/label";
 
 
 
@@ -10,12 +12,14 @@ import MenuItem, { MenuItemProps } from "../structs/menu-item";
 
 
 
-export interface CheckButtonProps extends Omit<MenuItemProps, "onClicked"> {
-    onClicked: (this: CheckButton, is_checked: boolean) => void;
+export interface CheckButtonProps extends MenuItemProps<CheckButton> {
     checked: boolean;
 }
 
-export default class CheckButton extends MenuItem<Menu> {
+export default class CheckButton extends MenuItem<CheckButtonProps, MenuCore, { clicked: (btn: CheckButton, is_checked: boolean) => void }> {
+
+    public static readonly RIGHT_ICON_CHECKED = "[◉]";
+    public static readonly RIGHT_ICON_UNCHECKED = "[○]";
 
     private _checked: boolean = false
 
@@ -34,20 +38,14 @@ export default class CheckButton extends MenuItem<Menu> {
 
     public render(width: number) {
 
-        const checked = this._checked ? '[X]' : '[ ]'
+        const checkBtnLabel = new Label({
+            label: this.label,
+            rightIcon: {
+                icon: this._checked ? CheckButton.RIGHT_ICON_CHECKED : CheckButton.RIGHT_ICON_UNCHECKED,
+            },
+        })
 
-        let spaces = byteOnly(
-            width - this.label.length
-        ) / 2
-        
-        return (
-            ' '.repeat(spaces + (
-                this.label.length % 2 == 1 ? 1 : 0
-                )
-            ) +
-            this.label +
-            ' '.repeat(spaces - checked.length) + checked
-        )
+        return checkBtnLabel.render(width)
     }
 
 

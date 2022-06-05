@@ -1,5 +1,6 @@
 
 import * as ffi from 'ffi-napi';
+import { RenderableLine } from '../classes/screen';
 
 
 /**
@@ -106,6 +107,37 @@ export class RenderColor {
 }
 
 
+
+
+export function hashLine(line: RenderableLine): number {
+    let hash = 0;
+
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        let _hash = 0;
+        
+        if(typeof char == 'number') {
+            _hash = 0;
+        }else {
+            for(const c of char) {
+                if(typeof c === 'string') {
+                    hash = ((hash << 5) - hash) + c.split('').map(c => c.charCodeAt(0)).reduce((a, b) => a + b)
+
+                }else {
+                    hash = ((hash << 5) - hash) + c[0]
+                    hash = ((hash << 5) - hash) + c[1].split('').map(c => c.charCodeAt(0)).reduce((a, b) => a + b)
+                }
+            }
+        }
+
+        hash = ((hash << 5) - hash) + _hash
+        hash |= 0; // Convert to 32bit integer
+    }
+
+    return hash;
+}
+
+
 export function byteOnly(n: number) {
     return Math.max(n, -n)
 }
@@ -124,3 +156,4 @@ export function centerString(str: string, width: number) {
         ' '.repeat(spaces)
     )
 }
+

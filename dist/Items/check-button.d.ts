@@ -1,10 +1,13 @@
-import Menu from "../menus/menu";
 import MenuItem, { MenuItemProps } from "../structs/menu-item";
-export interface CheckButtonProps extends Omit<MenuItemProps, "onClicked"> {
-    onClicked: (this: CheckButton, is_checked: boolean) => void;
+import MenuCore from "../structs/menu-core";
+export interface CheckButtonProps extends MenuItemProps<CheckButton> {
     checked: boolean;
 }
-export default class CheckButton extends MenuItem<Menu> {
+export default class CheckButton extends MenuItem<CheckButtonProps, MenuCore, {
+    clicked: (btn: CheckButton, is_checked: boolean) => void;
+}> {
+    static readonly RIGHT_ICON_CHECKED = "[\u25C9]";
+    static readonly RIGHT_ICON_UNCHECKED = "[\u25CB]";
     private _checked;
     get checked(): boolean;
     constructor(label: string, props?: Partial<CheckButtonProps>);

@@ -2,7 +2,10 @@
  * TODO: Warp all the `console` methods, to move the cursor to ender the menu and then call the orignal method
  */
 import { getCursorPosition, setCursorPosition } from "./console-utils";
-import { RenderColor } from '../helpers/rendering'
+import { hashLine, RenderColor } from '../helpers/rendering'
+import { writeFileSync } from "fs";
+
+const ENABLE_DEBUG = true
 
 // let _flag_c = 0;
 // const flag = () => 1 << _flag_c++
@@ -18,33 +21,46 @@ import { RenderColor } from '../helpers/rendering'
 export type RenderableLine = [/** flags */ number, (string | [ /** colors flags */ number, /** string to render */ string ])[]] 
 export type ScreenBuffer = RenderableLine[]
 
-export type ScreenCache = { buffer_cache: number[] }
+export type HashedLine = [ 
+    /** Hashed line */ number,
+    /** total string length */ number
+]
+
+export type ScreenCache = { buffer_cache: HashedLine[] }
 
 
 export interface ScreenOptions {
-    cache?: ScreenCache
+    cache?: boolean
     curser_under_screen?: boolean
 }
+
+export const screenCache: ScreenCache = { buffer_cache: [] }
 
 export default function renderScreenBuffer(buffer: ScreenBuffer, options: ScreenOptions = {}): ScreenCache {
 
     let height = 0;
     let mouseY = getCursorPosition().y
+    let debug_menu = []
 
-    if(!options.cache) {
-        options.cache = { buffer_cache: [] }
-    }
-
-
-    const cache_rendered_lines: number[] = []
+    const cache_rendered_lines: HashedLine[] = []
 
     while(height < buffer.length) {
         
-        cache_rendered_lines[height] = 0
 
         const current_line       = buffer[height]
         // const current_line_flags = current_line[0]
 
+        cache_rendered_lines[height] = [ hashLine(current_line), 0 ]
+
+        if(cache_rendered_lines[height][0] === screenCache.buffer_cache[height]?.[0]) {
+            
+            cache_rendered_lines[height] = screenCache.buffer_cache[height]
+            if(ENABLE_DEBUG) debug_menu[height] = '0'.repeat(screenCache.buffer_cache[height][1]);
+
+            height++
+            continue
+        }
+        
         let _current_point = -1
 
         setCursorPosition(0, height+mouseY)
@@ -54,7 +70,7 @@ export default function renderScreenBuffer(buffer: ScreenBuffer, options: Screen
             const current_str = current_line[1][_current_point]
             const is_color    = current_str instanceof Array
 
-            cache_rendered_lines[height] += is_color ? (
+            cache_rendered_lines[height][1] += is_color ? (
                 current_str[1].length
             ) : (
                 current_str.length
@@ -75,10 +91,12 @@ export default function renderScreenBuffer(buffer: ScreenBuffer, options: Screen
             }
         }
 
-        if(cache_rendered_lines[height] < options.cache.buffer_cache[height]) {
+        if(ENABLE_DEBUG) debug_menu[height] = '1'.repeat(cache_rendered_lines[height]?.[1]);
+
+        if(cache_rendered_lines[height][1] < screenCache.buffer_cache[height]?.[1]) {
             process.stdout.write(
                 ' '.repeat(
-                    options.cache.buffer_cache[height] - cache_rendered_lines[height] + 1
+                    screenCache.buffer_cache[height][1] - cache_rendered_lines[height][1] + 1
                 )
             )
         }
@@ -86,12 +104,12 @@ export default function renderScreenBuffer(buffer: ScreenBuffer, options: Screen
         height++;
     }
 
-    if(cache_rendered_lines.length < options.cache.buffer_cache.length) {
-        for(let i = cache_rendered_lines.length; i < options.cache.buffer_cache.length; i++) {
+    if(cache_rendered_lines.length < screenCache.buffer_cache.length) {
+        for(let i = cache_rendered_lines.length; i < screenCache.buffer_cache.length; i++) {
             setCursorPosition(0, height++)
             process.stdout.write(
                 ' '.repeat(
-                    options.cache.buffer_cache[i]
+                    screenCache.buffer_cache[i].length
                 )
             )
         }
@@ -101,7 +119,12 @@ export default function renderScreenBuffer(buffer: ScreenBuffer, options: Screen
     //     // setCursorPosition(0, buffer.length)
     // }
 
+    if(ENABLE_DEBUG) {
+        writeFileSync('debug.log', debug_menu.join('\n'))
+    }
+
     setCursorPosition(0, mouseY);
 
+    screenCache.buffer_cache = cache_rendered_lines
     return { buffer_cache: cache_rendered_lines };
 }

@@ -6,7 +6,6 @@ export default class Menu extends MenuCore {
     private readonly _title;
     private readonly _menu_header;
     private readonly _menu_footer;
-    private _cache?;
     constructor(_title?: string, props?: Partial<MenuPropertys>);
     initialize(): void;
     dispose(): void;

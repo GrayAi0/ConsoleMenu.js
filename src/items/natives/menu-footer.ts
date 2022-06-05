@@ -31,27 +31,29 @@ export default class MenuFooter extends MenuItem {
 
         return [
             this._render(
-                "-".repeat(max_length + props.padding * 2),
+                props.footer_style.repeat(max_length + props.padding * 2),
                 props,
+                false,
                 true
             ),
             
             ...footer_labels.map(label => this._render(label, props)),
 
             this._render(
-                "-".repeat(max_length + (props.padding * 2)),
+                props.footer_style.repeat(max_length + (props.padding * 2)),
                 props,
+                true,
                 true
             )
         ]
     }
 
-    private _render(item: string, props: MenuPropertys, _remove_padding?: boolean): RenderableLine {
+    private _render(item: string, props: MenuPropertys, is_bottom_line?: boolean, _remove_padding?: boolean): RenderableLine {
         return [
             0,
             [
                 // The left character of the menu
-                props.left_column_style + // "|"
+                (is_bottom_line ? props.bottom_left_corner_style : props.left_column_style) + // "|"
 
                 // The menu padding, before the item
                 (_remove_padding ? "" : ' '.repeat(props.padding)) +
@@ -63,7 +65,7 @@ export default class MenuFooter extends MenuItem {
                 (_remove_padding ? "" : ' '.repeat(props.padding)) +
                 
                 // The right character of the menu
-                props.right_column_style // "|"
+                (is_bottom_line ? props.bottom_right_corner_style : props.right_column_style) // "|"
             ]
         ]
     }

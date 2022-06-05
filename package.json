@@ -3,7 +3,6 @@
   "version": "0.1.1",
   "description": "",
   "main": "dist/index.js",
-  "module": "dist/console-menu.js.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -12,14 +11,28 @@
   "engines": {
     "node": ">=10"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GrayAi0/ConsoleMenu.js.git"
+  },
+  "keywords": [
+    "input",
+    "terminal",
+    "cmd",
+    "console",
+    "menu",
+    "console-menu",
+    "console-menu.js",
+    ""
+  ],
+  "bugs": {
+    "url": "https://github.com/GrayAi0/ConsoleMenu.js/issues"
+  },
+  "homepage": "https://github.com/GrayAi0/ConsoleMenu.js#readme",
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
+    "start": "ts-node example.ts",
+    "watch": "tsc -w",
+    "build": "tsc -b"
   },
   "author": "GrayAi0",
   "license": "ISC",

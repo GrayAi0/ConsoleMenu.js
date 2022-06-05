@@ -1,19 +1,11 @@
 import format from "../helpers/formater";
+import applyStyle, { MenuStyle } from "../styles";
 import MenuItem from "./menu-item";
 
 
 
-export interface MenuPropertys {
+export interface MenuPropertys extends MenuStyle {
     
-    // Styles
-    left_column_style: string
-    right_column_style: string
-    
-    header_style: string
-    
-    bottom_row_style: string
-    between_items_style: string
-
     // Padding
     padding: number
     between_items_padding: number
@@ -24,8 +16,6 @@ export interface MenuPropertys {
     message_item_format: string // "Item ${index} selected"
 
     minimal_width: number
-    
-
 }
 
 export default abstract class MenuCore {
@@ -54,25 +44,21 @@ export default abstract class MenuCore {
     constructor(
         propertys: Partial<MenuPropertys> = {}
     ) {
-        this.propertys = Object.assign<MenuPropertys, typeof propertys>({
-           
-            left_column_style: '|',
-            right_column_style: '|',
-           
-            header_style: '-',
-            bottom_row_style: '-',
-           
-            between_items_style: ' ',
-           
-            padding: 2,
-            between_items_padding: 1,
-
-            message_item_selected: false,
-            message_item_format: "Item ${index} selected",
-
-            minimal_width: 10,
-
-        }, propertys)
+        this.propertys = Object.assign<MenuPropertys, typeof propertys>(
+            applyStyle(
+                'normal',
+                {           
+                    padding: 2,
+                    between_items_padding: 1,
+        
+                    message_item_selected: false,
+                    message_item_format: "Item ${index} selected",
+        
+                    minimal_width: 10
+                }
+            ),
+            propertys
+        )
     }
 
 
@@ -125,7 +111,7 @@ export default abstract class MenuCore {
                 );
             else this.render();
 
-        }else if(key.name === 'left') {
+        }else if(key.name === 'left' || key.name === 'right') {
             if(this.current_selected_item) {
                 this.current_selected_item.onClicked()
             }
