@@ -54,7 +54,7 @@ function renderScreenBuffer(buffer, options) {
     if (cache_rendered_lines.length < exports.screenCache.buffer_cache.length) {
         for (var i = cache_rendered_lines.length; i < exports.screenCache.buffer_cache.length; i++) {
             (0, console_utils_1.setCursorPosition)(0, height++);
-            process.stdout.write(' '.repeat(exports.screenCache.buffer_cache[i].length));
+            process.stdout.write(' '.repeat(exports.screenCache.buffer_cache[i][1]));
         }
     }
     // if(options.curser_under_screen) {

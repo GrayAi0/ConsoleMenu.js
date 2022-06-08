@@ -109,7 +109,7 @@ export default function renderScreenBuffer(buffer: ScreenBuffer, options: Screen
             setCursorPosition(0, height++)
             process.stdout.write(
                 ' '.repeat(
-                    screenCache.buffer_cache[i].length
+                    screenCache.buffer_cache[i][1]
                 )
             )
         }
