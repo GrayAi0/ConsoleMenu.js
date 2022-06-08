@@ -17,7 +17,6 @@ export default abstract class MenuCore {
     protected _selected_item_idx: number;
     protected _items: MenuItem[];
     protected _messages: IDMessage[];
-    private _message_timeout_tmo;
     protected _is_menu_locked: boolean;
     protected _is_menu_hidden: boolean;
     private _max_id_msg;

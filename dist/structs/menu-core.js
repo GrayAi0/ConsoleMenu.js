@@ -17,7 +17,7 @@ var MenuCore = /** @class */ (function () {
             padding: 2,
             between_items_padding: 1,
             message_item_selected: false,
-            message_item_format: "Item ${index} selected",
+            message_item_format: "Item {index} selected",
             minimal_width: 10
         }), propertys);
     }

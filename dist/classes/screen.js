@@ -7,7 +7,7 @@ exports.screenCache = void 0;
 var console_utils_1 = require("./console-utils");
 var rendering_1 = require("../helpers/rendering");
 var fs_1 = require("fs");
-var ENABLE_DEBUG = true;
+var ENABLE_DEBUG = false;
 exports.screenCache = { buffer_cache: [] };
 function renderScreenBuffer(buffer, options) {
     var _a, _b, _c;

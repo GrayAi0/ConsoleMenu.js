@@ -72,20 +72,20 @@ var Menu = /** @class */ (function (_super) {
             if (rendered_item.length > width) {
                 return this.render(rendered_item.length);
             }
-            buffer.push(this._render(rendered_item, is_item_selected, item));
+            buffer.push(this._renderLine(rendered_item, is_item_selected, item));
             // We don't want to add padding after the last item
             // @ts-ignore
             if (idx != this._items.length - 1) {
                 // Adding between items padding
                 for (var i = 0; i < this.propertys.between_items_padding; i++) {
-                    buffer.push(this._render(this.propertys.between_items_style.repeat(width), false));
+                    buffer.push(this._renderLine(this.propertys.between_items_style.repeat(width), false));
                 }
             }
         }
         // Redner the menu
         (0, screen_1.default)((0, tslib_1.__spreadArray)((0, tslib_1.__spreadArray)((0, tslib_1.__spreadArray)([], rendered_menu_header, true), buffer, true), rendered_menu_footer, true), { curser_under_screen: true, cache: true });
     };
-    Menu.prototype._render = function (rendered_data, is_selected, item) {
+    Menu.prototype._renderLine = function (rendered_data, is_selected, item) {
         var _a;
         return [
             0,

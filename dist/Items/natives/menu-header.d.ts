@@ -6,5 +6,5 @@ export default class MenuHeader extends MenuItem {
     constructor(_label: string);
     /** @ts-ignore */
     render(width: number, props: MenuPropertys): [number, RenderableLine, RenderableLine, RenderableLine];
-    private _render;
+    private _renderLine;
 }

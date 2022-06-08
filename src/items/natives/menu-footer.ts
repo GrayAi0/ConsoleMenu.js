@@ -30,10 +30,10 @@ export default class MenuFooter extends MenuItem {
             
             labels.push(
                 ...footer_labels.map(lbl => (
-                    this._render(lbl, props)
+                    this._renderLine(lbl, props)
                 )),
 
-                this._render(
+                this._renderLine(
                     props.footer_style.repeat(max_length + props.padding * 2),
                     props,
                     /** @ts-ignore */
@@ -46,7 +46,7 @@ export default class MenuFooter extends MenuItem {
 
 
         return [
-            this._render(
+            this._renderLine(
                 props.footer_style.repeat(max_length + props.padding * 2),
                 props,
                 !labels.length,
@@ -55,7 +55,7 @@ export default class MenuFooter extends MenuItem {
             
             ...labels,
 
-            // this._render(
+            // this._renderLine(
             //     props.footer_style.repeat(max_length + (props.padding * 2)),
             //     props,
             //     true,
@@ -64,7 +64,7 @@ export default class MenuFooter extends MenuItem {
         ]
     }
 
-    private _render(item: string, props: MenuPropertys, is_bottom_line?: boolean, _remove_padding?: boolean): RenderableLine {
+    private _renderLine(item: string, props: MenuPropertys, is_bottom_line?: boolean, _remove_padding?: boolean): RenderableLine {
         return [
             0,
             [

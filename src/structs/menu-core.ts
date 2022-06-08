@@ -31,10 +31,10 @@ export default abstract class MenuCore {
     protected _selected_item_idx: number = -1
     protected _items: MenuItem[] = []
     protected _messages: IDMessage[] = [];
-    private _message_timeout_tmo: NodeJS.Timeout | undefined;
     
     protected _is_menu_locked: boolean = false;
     protected _is_menu_hidden: boolean = false;
+
     private _max_id_msg = 0;
 
     public get current_selected_item(): MenuItem {
@@ -56,7 +56,7 @@ export default abstract class MenuCore {
                     between_items_padding: 1,
         
                     message_item_selected: false,
-                    message_item_format: "Item ${index} selected",
+                    message_item_format: "Item {index} selected",
         
                     minimal_width: 10
                 }

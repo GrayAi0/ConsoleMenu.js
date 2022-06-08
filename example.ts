@@ -12,7 +12,8 @@ export default function example() {
         "ConsoleMenu.js Beta",
         applyStyle('fancy', {
 
-
+            message_item_selected: true,
+            
             minimal_width: 35,
         })
     );

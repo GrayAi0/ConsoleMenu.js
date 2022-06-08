@@ -5,7 +5,7 @@ import { getCursorPosition, setCursorPosition } from "./console-utils";
 import { hashLine, RenderColor } from '../helpers/rendering'
 import { writeFileSync } from "fs";
 
-const ENABLE_DEBUG = true
+const ENABLE_DEBUG = false
 
 // let _flag_c = 0;
 // const flag = () => 1 << _flag_c++

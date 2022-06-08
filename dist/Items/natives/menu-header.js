@@ -16,12 +16,12 @@ var MenuHeader = /** @class */ (function (_super) {
         return [
             /** @ts-ignore */
             header_label.length,
-            this._render(props.header_style.repeat((header_label.length + props.padding * 2)), props, true, true),
-            this._render(header_label, props),
-            this._render(props.header_style.repeat(header_label.length + (props.padding * 2)), props, false, true)
+            this._renderLine(props.header_style.repeat((header_label.length + props.padding * 2)), props, true, true),
+            this._renderLine(header_label, props),
+            this._renderLine(props.header_style.repeat(header_label.length + (props.padding * 2)), props, false, true)
         ];
     };
-    MenuHeader.prototype._render = function (item, props, is_top_line, _remove_padding) {
+    MenuHeader.prototype._renderLine = function (item, props, is_top_line, _remove_padding) {
         return [
             0,
             [

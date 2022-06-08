@@ -26,19 +26,19 @@ export default class MenuHeader extends MenuItem {
             /** @ts-ignore */
             header_label.length,
 
-            this._render(
+            this._renderLine(
                 props.header_style.repeat((header_label.length + props.padding * 2)),
                 props,
                 true,
                 true
             ),
             
-            this._render(
+            this._renderLine(
                 header_label,
                 props
             ),
 
-            this._render(
+            this._renderLine(
                 props.header_style.repeat(header_label.length + (props.padding * 2)),
                 props,
                 false,
@@ -47,7 +47,7 @@ export default class MenuHeader extends MenuItem {
         ]
     }
 
-    private _render(item: string, props: MenuPropertys, is_top_line?: boolean, _remove_padding?: boolean): RenderableLine {
+    private _renderLine(item: string, props: MenuPropertys, is_top_line?: boolean, _remove_padding?: boolean): RenderableLine {
         return [
             0,
             [

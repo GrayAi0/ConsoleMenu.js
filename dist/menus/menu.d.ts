@@ -12,5 +12,5 @@ export default class Menu extends MenuCore {
     protected _hide(): void;
     protected _show(): void;
     render(width?: number): void;
-    private _render;
+    private _renderLine;
 }

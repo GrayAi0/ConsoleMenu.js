@@ -5,5 +5,5 @@ export default class MenuFooter extends MenuItem {
     constructor();
     /** @ts-ignore */
     render(messages: string[], width: number, props: MenuPropertys): RenderableLine[];
-    private _render;
+    private _renderLine;
 }

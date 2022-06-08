@@ -99,7 +99,7 @@ export default class Menu extends MenuCore {
             }
 
             buffer.push(
-                this._render(
+                this._renderLine(
                     rendered_item,
                     is_item_selected,
                     item
@@ -112,7 +112,7 @@ export default class Menu extends MenuCore {
                 // Adding between items padding
                 for(let i = 0; i < this.propertys.between_items_padding; i++) {
                     buffer.push(
-                        this._render(
+                        this._renderLine(
                             this.propertys.between_items_style.repeat(width),
                             false
                         )
@@ -136,7 +136,7 @@ export default class Menu extends MenuCore {
     }
 
 
-    private _render(rendered_data: string, is_selected: boolean, item?: MenuItem): RenderableLine {
+    private _renderLine(rendered_data: string, is_selected: boolean, item?: MenuItem): RenderableLine {
 
         return [
             0,
